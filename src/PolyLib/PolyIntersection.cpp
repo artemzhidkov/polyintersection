@@ -1,4 +1,5 @@
 ﻿#include <PolyIntersection.h>
+#include <BinaryTree.h>
 
 #include <algorithm>
 
@@ -98,5 +99,6 @@ void PolyIntersection::Intersect(const ClosedPolygon& thePoly1,
                                  const ClosedPolygon& thePoly2,
                                  const double theTolerance)
 {
-
+  BinaryTree bTree2(thePoly2);
+  // ищем точки пересечения сторон многоугольников
 }
