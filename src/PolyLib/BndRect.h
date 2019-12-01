@@ -19,6 +19,9 @@ public:
   /// \brief Проверка, пересекаются ли прямоугольники с заданной точностью
   bool IsIntersected(const BndRect& theRect, const double theTolerance) const;
 
+  const Point2D& MinCorner() const { return myMinCorner; }
+  const Point2D& MaxCorner() const { return myMaxCorner; }
+
 private:
   Point2D myMinCorner; ///< узел с минимальными координатами
   Point2D myMaxCorner; ///< узел с максимальными координатами

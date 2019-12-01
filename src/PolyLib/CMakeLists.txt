@@ -6,13 +6,17 @@ set(HEADERS Defines.h
             BndRect.h
             ClosedPolygon.h
             PolyIntersection.h
-            PolyIO.h)
+            PolyIO.h
+            PolyTools.h
+)
 
 set(SOURCES BinaryTree.cpp
             BinaryTreeIntersector.cpp
             BndRect.cpp
             PolyIntersection.cpp
-            PolyIO.cpp)
+            PolyIO.cpp
+            PolyTools.cpp
+)
 
 add_definitions(-DPOLYLIB_EXPORTS)
 
