@@ -37,9 +37,10 @@ BinaryTreeIntersector::BinaryTreeIntersector(const BinaryTree& thePolyBT)
   : myTree(thePolyBT)
 {}
 
-void BinaryTreeIntersector::Intersect(const Point2D& theStart,
-                                      const Point2D& theEnd,
-                                      const double theTolerance)
+const std::unordered_map<int, Point2D>& BinaryTreeIntersector::Intersect(
+    const Point2D& theStart,
+    const Point2D& theEnd,
+    const double theTolerance)
 {
   myIntersectionPoints.clear();
 
@@ -63,6 +64,8 @@ void BinaryTreeIntersector::Intersect(const Point2D& theStart,
                             intPoint, theTolerance))
         myIntersectionPoints[id] = intPoint;
     }
+
+  return myIntersectionPoints;
 }
 
 void BinaryTreeIntersector::SearchSegments(const BndRect& theRect,

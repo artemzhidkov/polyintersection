@@ -14,7 +14,12 @@ public:
   BinaryTreeIntersector(const BinaryTree& thePolyBT);
 
   /// \brief Поиск пересечения с отрезком с заданной точностью
-  void Intersect(const Point2D& theStart, const Point2D& theEnd, const double theTolerance);
+  /// \param[in] theStart начальная точка отрезка
+  /// \param[in] theEnd   конечная точка отрезка
+  /// \param[in] theTolerance точность вычислений
+  /// \return индексы отрезков и точки пересечения
+  const std::unordered_map<int, Point2D>&
+  Intersect(const Point2D& theStart, const Point2D& theEnd, const double theTolerance);
 
 private:
   /// \brief Поиск сторон многоугольника, которые потенциально пересекают заданный прямоугольник
