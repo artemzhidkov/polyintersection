@@ -13,7 +13,7 @@ public:
 
 private:
   /// \brief Заполнение дерева
-  void Fill(const ClosedPolygon& thePoly);
+  void Fill();
 
 private:
   struct Node
@@ -25,4 +25,7 @@ private:
 
   std::vector<Node> myNodes; ///< узлы дерева
   size_t myDepth; ///< глубина дерева (максимальное значение 10, соответствует 1023 узлам дерева)
+  const ClosedPolygon& myPoly; ///< многоугольник,Ю для которого построено дерево
+
+  friend class BinaryTreeIntersector;
 };

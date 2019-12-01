@@ -26,3 +26,12 @@ void BndRect::Add(const BndRect& theRect)
   myMaxCorner.x = max(myMaxCorner.x, theRect.myMaxCorner.x);
   myMaxCorner.y = max(myMaxCorner.y, theRect.myMaxCorner.y);
 }
+
+bool BndRect::IsIntersected(const BndRect& theRect, const double theTolerance) const
+{
+  bool isOut = theRect.myMinCorner.x > myMaxCorner.x + theTolerance ||
+               theRect.myMinCorner.y > myMaxCorner.y + theTolerance ||
+               theRect.myMaxCorner.x + theTolerance < myMinCorner.x ||
+               theRect.myMaxCorner.y + theTolerance < myMinCorner.y;
+  return !isOut;
+}

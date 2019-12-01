@@ -4,6 +4,7 @@
 #include <cmath>
 
 BinaryTree::BinaryTree(const ClosedPolygon& thePoly)
+  : myPoly(thePoly)
 {
   static const int MAX_DEPTH = 10;
   if (thePoly.size() < (1 << (MAX_DEPTH - 1)))
@@ -13,15 +14,15 @@ BinaryTree::BinaryTree(const ClosedPolygon& thePoly)
 
   myNodes.reserve(1 << myDepth);
 
-  Fill(thePoly);
+  Fill();
 }
 
-void BinaryTree::Fill(const ClosedPolygon& thePoly)
+void BinaryTree::Fill()
 {
   auto max = [](auto val1, auto val2) { return val1 > val2 ? val1 : val2; };
 
   // строим дерево
-  myNodes.emplace_back(-1, -1, 0, thePoly.size() - 1);
+  myNodes.emplace_back(-1, -1, 0, myPoly.size() - 1);
   auto itNode = myNodes.begin();
   for (int aDepth = 0; aDepth < myDepth; ++itNode)
   {
@@ -39,7 +40,7 @@ void BinaryTree::Fill(const ClosedPolygon& thePoly)
       myNodes.emplace_back(-1, -1, start, end);
       itNode->myChild[1] = myNodes.size() - 1;
     }
-    if (end == thePoly.size() - 1)
+    if (end == myPoly.size() - 1)
       ++aDepth;
   }
 
@@ -50,10 +51,10 @@ void BinaryTree::Fill(const ClosedPolygon& thePoly)
     if (itRev->myChild[0] == -1 && itRev->myChild[1] == -1)
     {
       // нет дочерних узлов, вычисляем по координатам точек
-      if (itRev->mySegments[1] == thePoly.size() - 1)
-        itRev->myBndRect.Add(thePoly[0]);
-      std::for_each(thePoly.begin() + itRev->mySegments[0],
-                    thePoly.begin() + itRev->mySegments[1] + 1,
+      if (itRev->mySegments[1] == myPoly.size() - 1)
+        itRev->myBndRect.Add(myPoly[0]);
+      std::for_each(myPoly.begin() + itRev->mySegments[0],
+                    myPoly.begin() + itRev->mySegments[1] + 1,
                     [&itRev](const Point2D& thePoint) { itRev->myBndRect.Add(thePoint); }
       );
     }
