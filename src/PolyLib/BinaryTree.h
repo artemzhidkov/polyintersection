@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <ClosedPolygon.h>
+#include <BndRect.h>
 
 /// \brief Представление полигона в виде бинарного дерева
 ///
@@ -16,7 +16,13 @@ private:
   void Fill(const ClosedPolygon& thePoly);
 
 private:
-  std::vector<int[4]> myChildIndices; ///< индексы дочерних узлов (-1, если узла нет) и сегментов, попадающих в данный узел (left, right, first, last)
-  std::vector<double[4]> myBndRect;   ///< координаты описанного прямоугольника (xMin, yMin, xMax, yMax)
+  struct Node
+  {
+    int myChild[2];    ///< индексы дочерних узлов (-1, если узла нет), leftChild и rightChild
+    int mySegments[2]; ///< индексы сегментов, попадающих в данный узел (first, last)
+    BndRect myBndRect; ///< координаты описанного прямоугольника
+  };
+
+  std::vector<Node> myNodes; ///< узлы дерева
   size_t myDepth; ///< глубина дерева (максимальное значение 10, соответствует 1023 узлам дерева)
 };

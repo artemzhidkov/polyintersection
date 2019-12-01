@@ -3,12 +3,14 @@
 set(HEADERS Defines.h
             BinaryTree.h
             BinaryTreeIntersector.h
+            BndRect.h
             ClosedPolygon.h
             PolyIntersection.h
             PolyIO.h)
 
 set(SOURCES BinaryTree.cpp
             BinaryTreeIntersector.cpp
+            BndRect.cpp
             PolyIntersection.cpp
             PolyIO.cpp)
 
