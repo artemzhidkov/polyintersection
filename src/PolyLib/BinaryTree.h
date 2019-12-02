@@ -21,6 +21,14 @@ private:
     int myChild[2];    ///< индексы дочерних узлов (-1, если узла нет), leftChild и rightChild
     int mySegments[2]; ///< индексы сегментов, попадающих в данный узел (first, last)
     BndRect myBndRect; ///< координаты описанного прямоугольника
+
+    Node(const int theLeftChild, const int theRightChild, const int theStart, const int theEnd)
+    {
+      myChild[0] = theLeftChild;
+      myChild[1] = theRightChild;
+      mySegments[0] = theStart;
+      mySegments[1] = theEnd;
+    }
   };
 
   std::vector<Node> myNodes; ///< узлы дерева

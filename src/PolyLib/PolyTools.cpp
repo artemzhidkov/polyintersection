@@ -35,26 +35,27 @@ bool PolyTools::isConvex(const ClosedPolygon& thePoly, const double theTolerance
     double cosinus = dir1.x * dir2.x + dir1.y * dir2.y;
     double sinus = dir1.x * dir2.y - dir1.y * dir2.x;
 
+    double ang = 0.0;
     if (cosinus > -M_SQRT1_2 && cosinus < M_SQRT1_2)
     {
       if (sinus > 0)
-        return acos(cosinus);
+        ang = acos(cosinus);
       else
-        return -acos(cosinus);
+        ang = -acos(cosinus);
     }
     else
     {
       if (cosinus > 0.0)
-        return asin(sinus);
+        ang = asin(sinus);
       else
       {
         if (sinus > 0)
-          return M_PI - asin(sinus);
+          ang = M_PI - asin(sinus);
         else
-          return -M_PI - asin(sinus);
+          ang = -M_PI - asin(sinus);
       }
     }
-    return 0.0;
+    return ang;
   };
 
   auto prevNode = --thePoly.end();
@@ -183,7 +184,7 @@ void PolyTools::AlgoCommon::closedPoly(const int thePolyID, const size_t theStar
   size_t curIndex = theStartIndex;
   do {
     myProcessedPoints.insert(curIndex);
-    newPoly.push_back(myCoordinates[curIndex]);
+    newPoly.push_back((*myCoordinates)[curIndex]);
 
     curIndex = myPolygons[polyID]->at(curIndex);
     if (myPolygons[1 - polyID]->find(curIndex) != myPolygons[1 - polyID]->end())

@@ -12,7 +12,7 @@ BinaryTree::BinaryTree(const ClosedPolygon& thePoly)
   else
     myDepth = MAX_DEPTH;
 
-  myNodes.reserve(1 << myDepth);
+  myNodes.reserve(1ULL << myDepth);
 
   Fill();
 }
@@ -22,7 +22,7 @@ void BinaryTree::Fill()
   auto max = [](auto val1, auto val2) { return val1 > val2 ? val1 : val2; };
 
   // строим дерево
-  myNodes.emplace_back(-1, -1, 0, myPoly.size() - 1);
+  myNodes.emplace_back(-1, -1, 0, (int)myPoly.size() - 1);
   auto itNode = myNodes.begin();
   for (int aDepth = 0; aDepth < myDepth; ++itNode)
   {
@@ -31,16 +31,16 @@ void BinaryTree::Fill()
     int start = itNode->mySegments[0];
     int end = start + size;
     myNodes.emplace_back(-1, -1, start, end);
-    itNode->myChild[0] = myNodes.size() - 1;
+    itNode->myChild[0] = (int)myNodes.size() - 1;
     // правый подузел
     start = end + 1;
     end = max(start + size, itNode->mySegments[1]);
     if (start < end)
     {
       myNodes.emplace_back(-1, -1, start, end);
-      itNode->myChild[1] = myNodes.size() - 1;
+      itNode->myChild[1] = (int)myNodes.size() - 1;
     }
-    if (end == myPoly.size() - 1)
+    if (end == (int)myPoly.size() - 1)
       ++aDepth;
   }
 
@@ -51,7 +51,7 @@ void BinaryTree::Fill()
     if (itRev->myChild[0] == -1 && itRev->myChild[1] == -1)
     {
       // нет дочерних узлов, вычисляем по координатам точек
-      if (itRev->mySegments[1] == myPoly.size() - 1)
+      if (itRev->mySegments[1] == (int)myPoly.size() - 1)
         itRev->myBndRect.Add(myPoly[0]);
       std::for_each(myPoly.begin() + itRev->mySegments[0],
                     myPoly.begin() + itRev->mySegments[1] + 1,

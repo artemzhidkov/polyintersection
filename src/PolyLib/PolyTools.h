@@ -23,7 +23,7 @@ namespace PolyTools
   class Algorithm
   {
   public:
-    Algorithm() = default;
+    Algorithm() {}
     virtual ~Algorithm() {}
 
     /// \brief Инициализация алгоритма
@@ -35,7 +35,7 @@ namespace PolyTools
     {
       myPolygons[0] = &thePoly1;
       myPolygons[1] = &thePoly2;
-      myCoordinates = theCoordinates;
+      myCoordinates = &theCoordinates;
       myStartIndices[0] = thePoly1StartIndex;
       myStartIndices[1] = thePoly2StartIndex;
     }
@@ -45,7 +45,7 @@ namespace PolyTools
 
   protected:
     std::unordered_map<size_t, size_t> const* myPolygons[2];
-    std::vector<Point2D>& myCoordinates;
+    std::vector<Point2D> const* myCoordinates;
     size_t myStartIndices[2];
   };
 
