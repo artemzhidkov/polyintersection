@@ -30,8 +30,8 @@ bool PolyTools::isConvex(const ClosedPolygon& thePoly, const double theTolerance
   // вычисление угла по трём точкам в диапазоне (-pi, pi]
   auto angle = [&](const Point2D& theFirst, const Point2D& theSecond, const Point2D& theThird)
   {
-    auto dir1 = direction(theFirst, theSecond, theTolerance);
-    auto dir2 = direction(theSecond, theThird, theTolerance);
+    auto dir1 = direction(theSecond, theThird, theTolerance);
+    auto dir2 = direction(theSecond, theFirst, theTolerance);
     double cosinus = dir1.x * dir2.x + dir1.y * dir2.y;
     double sinus = dir1.x * dir2.y - dir1.y * dir2.x;
 
@@ -66,18 +66,21 @@ bool PolyTools::isConvex(const ClosedPolygon& thePoly, const double theTolerance
   double totalAngle = firstAngle;
   double angleThreshold = theTolerance + M_PI * (thePoly.size() - 2);
 
+  prevNode = curNode;
+  curNode = nextNode++;
+
   do {
-    prevNode = curNode;
-    curNode = nextNode++;
     auto curAngle = angle(*prevNode, *curNode, *nextNode);
     if (curAngle * firstAngle < -theTolerance)
       return false; // углы разных знаков
     totalAngle += curAngle;
     if (totalAngle > angleThreshold)
       return false; // многоугольник имеет самопересечения
+    prevNode = curNode;
+    curNode = nextNode++;
   } while (nextNode != thePoly.end());
   // проверяем, что суммарный угол отличается от pi*(N-2) не более, чем на заданную точность
-  return totalAngle + theTolerance * 2.0 < angleThreshold;
+  return totalAngle + theTolerance * 2.0 > angleThreshold;
 }
 
 bool PolyTools::isInConvexPolygon(const Point2D& thePoint, const ClosedPolygon& thePoly, const double theTolerance)
@@ -159,26 +162,31 @@ void PolyTools::AlgoCommon::Perform()
 {
   int polyID = 1;
   size_t curPoint = myStartIndices[polyID];
-  while (myFirstPointOut)
-  {
-    // ищем точку пересечения многоугольников
-    curPoint = myPolygons[polyID]->at(curPoint);
-    myFirstPointOut = myPolygons[1 - polyID]->find(curPoint) == myPolygons[1 - polyID]->end();
-  }
-
   // собираем многоугольики
-  while (curPoint != myStartIndices[polyID])
-  {
+  do {
     if (myProcessedPoints.find(curPoint) == myProcessedPoints.end())
-      closedPoly(polyID, curPoint);
+    {
+      // пропускаем все точки второго многоугольника, лежащие вне первого
+      while (myFirstPointOut)
+      {
+        curPoint = myPolygons[polyID]->at(curPoint);
+        myFirstPointOut = myPolygons[1 - polyID]->find(curPoint) == myPolygons[1 - polyID]->end();
+      }
+
+      if (myProcessedPoints.find(curPoint) == myProcessedPoints.end())
+        closedPoly(polyID, curPoint);
+    }
     curPoint = myPolygons[polyID]->at(curPoint);
-  }
+    if (myPolygons[0]->find(curPoint) != myPolygons[0]->end() &&
+        myPolygons[1]->find(curPoint) != myPolygons[1]->end())
+      myFirstPointOut = !myFirstPointOut;
+  } while (curPoint != myStartIndices[polyID]);
 }
 
 void PolyTools::AlgoCommon::closedPoly(const int thePolyID, const size_t theStartIndex)
 {
   myResults.emplace_back();
-  auto newPoly = myResults.back();
+  ClosedPolygon& newPoly = myResults.back();
 
   int polyID = thePolyID;
   size_t curIndex = theStartIndex;

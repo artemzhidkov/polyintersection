@@ -18,14 +18,18 @@ bool PolyIO::Read(std::istream& theStream, ClosedPolygon& thePolygon)
 {
   bool isOk = true;
   double x, y;
-  while (!theStream.eof()) {
+  while (!theStream.eof())
+  {
     theStream >> x;
-    if (theStream.eof()) {
+    if (theStream.fail())
+      break; // первого числа нет - пустая строка в конце
+    theStream >> y;
+    if (theStream.fail())
+    {
       // количество чисел - нечётное
       isOk = false;
       break;
     }
-    theStream >> y;
     thePolygon.emplace_back(x, y);
   }
   return isOk;
