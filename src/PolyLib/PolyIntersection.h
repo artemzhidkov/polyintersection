@@ -11,7 +11,7 @@
 class PolyIntersection
 {
   /// Точность операций с плавающей точкой по умолчанию
-  static const double DEFAULT_TOLERANCE;
+  PolyIntersection_EXPORT static const double DEFAULT_TOLERANCE;
 
 public:
   /// \brief Статус алгоритма
@@ -31,10 +31,16 @@ public:
                    const ClosedPolygon& thePoly2,
                    const double theTolerance = DEFAULT_TOLERANCE);
 
+  /// \brief Статус алгоритма
+  Status IsDone() const { return myDone; }
+  /// \brief Результат пересечения
+  const std::list<ClosedPolygon>& Results() const { return myResults; }
+
 protected:
   /// \brief Пересечение многоугольников.
   /// \param[in] thePoly1 выпуклый многоугольник
   /// \param[in] thePoly2 невыпуклый многоугольник (в общем случае)
+  /// \param[in] theTolerance точность вычисления пересечений
   void Intersect(const ClosedPolygon& thePoly1,
                  const ClosedPolygon& thePoly2,
                  const double theTolerance);

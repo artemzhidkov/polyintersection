@@ -1,12 +1,15 @@
 # Описание файла: Конфигурация библиотеки поиска пересечения плоских многоугольников
 
-set(HEADERS Defines.h
+set(API_HEADERS Defines.h
+                ClosedPolygon.h
+                PolyIntersection.h
+                PolyIO.h
+)
+
+set(HEADERS ${API_HEADERS}
             BinaryTree.h
             BinaryTreeIntersector.h
             BndRect.h
-            ClosedPolygon.h
-            PolyIntersection.h
-            PolyIO.h
             PolyTools.h
 )
 
@@ -27,7 +30,7 @@ install(TARGETS ${${PROJECT_NAME}_LIBRARY_NAME}
         RUNTIME DESTINATION ${INSTALL_BINARY}
         LIBRARY DESTINATION ${INSTALL_BINARY}
         ARCHIVE DESTINATION ${INSTALL_LIBRARY})
-install(FILES ${HEADERS} DESTINATION ${INSTALL_INCLUDE})
+install(FILES ${API_HEADERS} DESTINATION ${INSTALL_INCLUDE})
 if(WIN32)
   install(FILES $<TARGET_PDB_FILE:${${PROJECT_NAME}_LIBRARY_NAME}>
           DESTINATION ${INSTALL_BINARY} OPTIONAL)
