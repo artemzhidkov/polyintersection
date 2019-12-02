@@ -1,0 +1,4 @@
+#pragma once
+#include <string>
+
+static const std::string TEST_DATA_PATH("@loc_TEST_DATA_PATH@/");
